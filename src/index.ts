@@ -9,22 +9,11 @@
 // app(initialState, new Actions(), Container, document.body);
 
 import { app } from 'hyperapp'
-import Container from './Container'
-import './index.css'
+import devtools from 'hyperapp-redux-devtools'
 
-const state = {
-  starWarsPeople: []
-}
+// import { Actions, State } from './store'
+import { actions, state, view } from './app'
 
-const actions = {
-  fetchStarWarsPeople: () => (state, actions) => {
-    fetch('https://swapi.co/api/people')
-      .then(res => res.json())
-      .then(data => actions.setStarWarsPeople(data))
-  },
-  setStarWarsPeople: ({ results }) => state => ({
-    starWarsPeople: results
-  })
-}
+devtools(app)(state, actions, view, document.body)
 
-app(state, actions, Container, document.body)
+// app<State, Actions>(state, actions, view, document.body)
