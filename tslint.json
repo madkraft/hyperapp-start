@@ -2,6 +2,7 @@
   "extends": "tslint-config-standard-plus",
   "rules": {
     "arrow-parens": false,
-    "space-before-function-paren": false
+    "space-before-function-paren": false,
+    "quotemark": [true, "single", "jsx-double"]
   }
 }
