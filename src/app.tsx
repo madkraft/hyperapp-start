@@ -1,26 +1,41 @@
 import { ActionsType, h, View } from 'hyperapp'
-import { Route } from '@hyperapp/router'
+import { location, Route } from '@hyperapp/router'
 
-import { Actions, State, Store } from './store'
 import './index.css'
 
-import { Home } from './modules/home'
-import { About } from './modules/about'
+import HomePage from './modules/home'
+import { HomeModuleState, HomeModuleActions } from './modules/home/models'
+import AboutPage from './modules/about'
 
-export const state: State = Store.state
-export const actions: ActionsType<State, Actions> = Store.actions
+export interface State {
+  location: any
+  home: HomeModuleState
+  about: any
+}
 
-export const view: View<State, Actions> = (
-  { starWarsPeople },
-  { fetchStarWarsPeople }
-) => (
-  <main>
-    <Route
-      path="/"
-      render={() => (
-        <Home people={starWarsPeople} fetch={fetchStarWarsPeople} />
-      )}
-    />
-    <Route path="/about" render={About} />
-  </main>
-)
+export interface Actions {
+  location: any
+  home: HomeModuleActions
+  about: any
+}
+
+export const state: State = {
+  location: location.state,
+  home: HomePage.state,
+  about: AboutPage.state
+}
+
+export const actions: Actions = {
+  location: location.actions,
+  home: HomePage.actions,
+  about: AboutPage.actions
+}
+
+export const view: View<State, Actions> = (state, actions) => {
+  return (
+    <main>
+      <Route path="/" render={() => HomePage.view(state.home, actions.home)} />
+      <Route path="/about" render={() => AboutPage.view()} />
+    </main>
+  )
+}

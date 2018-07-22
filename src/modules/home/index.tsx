@@ -1,16 +1,36 @@
-import { Component, h } from 'hyperapp'
-import { Link } from '@hyperapp/router'
+import { h } from 'hyperapp'
 
-export interface Home {
-  people: any
-  fetch(): any
+import { Home } from './Home'
+import { HomeModuleState, HomeModuleActions } from './models'
+
+interface HomeModule {
+  state: HomeModuleState
+  actions: HomeModuleActions
+  view(state: HomeModuleState, actions: HomeModuleActions): JSX.Element
 }
 
-export const Home: Component<Home> = ({ people, fetch }) => (
-  <div>
-    <Link to="/about">about</Link>
-    <h2>Home</h2>
-    <button onclick={fetch}>Fetch people</button>
-    {people.map(person => <p>Hello {person.name}</p>)}
-  </div>
-)
+const HomeModule: HomeModule = {
+  state: {
+    title: 'Hello Home!',
+    starWarsPeople: []
+  },
+  actions: {
+    fetchStarWarsPeople: () => (state, actions) => {
+      fetch('https://swapi.co/api/people')
+        .then(res => res.json())
+        .then(data => actions.setStarWarsPeople(data))
+    },
+    setStarWarsPeople: ({ results }) => state => ({
+      starWarsPeople: results
+    })
+  },
+  view: (state, actions) => (
+    <Home
+      title={state.title}
+      starWarsPeople={state.starWarsPeople}
+      fetch={actions.fetchStarWarsPeople}
+    />
+  )
+}
+
+export default HomeModule

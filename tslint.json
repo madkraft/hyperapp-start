@@ -3,6 +3,7 @@
   "rules": {
     "arrow-parens": false,
     "space-before-function-paren": false,
-    "quotemark": [true, "single", "jsx-double"]
+    "quotemark": [true, "single", "jsx-double"],
+    "ordered-imports": false
   }
 }
